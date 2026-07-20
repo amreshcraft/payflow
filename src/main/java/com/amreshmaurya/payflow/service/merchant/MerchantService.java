@@ -1,5 +1,10 @@
 package com.amreshmaurya.payflow.service.merchant;
 
+import java.util.UUID;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.amreshmaurya.payflow.dto.merchant.request.CreateMerchantRequest;
 import com.amreshmaurya.payflow.dto.merchant.response.MerchantResponse;
 import com.amreshmaurya.payflow.entity.merchant.Merchant;
@@ -7,14 +12,7 @@ import com.amreshmaurya.payflow.exception.ResourceNotFoundException;
 import com.amreshmaurya.payflow.mapper.MerchantMapper;
 import com.amreshmaurya.payflow.repository.MerchantRepository;
 import com.amreshmaurya.payflow.util.ApiKeyGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-
-import java.util.UUID;
-
-import static com.amreshmaurya.payflow.util.ApiKeyGenerator.generateSecretKey;
 
 
 @Service
@@ -25,7 +23,7 @@ public class MerchantService {
     PasswordEncoder passwordEncoder;
 
 
-    @Autowired
+    
     public MerchantService(MerchantRepository   merchantRepository, MerchantMapper merchantMapper,PasswordEncoder passwordEncoder) {
         this.merchantRepository = merchantRepository;
         this.merchantMapper = merchantMapper;
@@ -54,7 +52,20 @@ public class MerchantService {
     }
 
 
-//    public MerchantResponse updateMerchant(UpdateMerchantRequest updateMerchantRequest) {}
+   public MerchantResponse updateMerchant(UUID id,  CreateMerchantRequest createMerchantRequest) {
+    
+        Merchant merchant = merchantRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Merchant not found"));
+        merchantMapper.updateMerchantFromRequest(createMerchantRequest, merchant);
+        Merchant res =  merchantRepository.save(merchant);
+         return merchantMapper.toResponse(res);
+
+    }
+   
+
+   public void deleteMerchant(UUID id) {
+        Merchant merchant = merchantRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Merchant not found"));
+        merchantRepository.delete(merchant);
+    }
 
     public MerchantResponse getMerchantById(UUID id) {
      Merchant res = merchantRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Merchant not found"));
