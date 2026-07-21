@@ -1,8 +1,16 @@
 package com.amreshmaurya.payflow.entity.merchant;
 
 import com.amreshmaurya.payflow.entity.BaseEntity;
-import jakarta.persistence.*;
-import lombok.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Builder.Default;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "merchants")
@@ -30,12 +38,14 @@ public class Merchant extends BaseEntity {
 
     private String website;
 
-    @Column(nullable = false)
     private String apiKey;
 
-    @Column(nullable = false)
     private String secretKey;
-
-    @Column(nullable = false)
+    
+    @Default
     private Boolean active = true;
+
+
+
+ 
 }

@@ -1,15 +1,22 @@
 package com.amreshmaurya.payflow.dto.merchant.request;
 
-import com.amreshmaurya.payflow.entity.BaseEntity;
 import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public class UpdateMerchantRequest extends BaseEntity {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class UpdateMerchantRequest {
 
-    @Column(nullable = false)
+ @Column(nullable = false)
     private String businessName;
 
-    @Column(nullable = false, unique = true)
-    private String merchantCode;
+    // @Column(nullable = false, unique = true)
+    // private String merchantCode;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -22,13 +29,12 @@ public class UpdateMerchantRequest extends BaseEntity {
 
     private String website;
 
-    @Column(nullable = false)
-    private String apiKey;
+    // @Column(nullable = false)
+    // private String apiKey;
 
-    @Column(nullable = false)
-    private String secretKey;
+    // @Column(nullable = false)
+    // private String secretKey;
 
     @Column(nullable = false)
     private Boolean active = true;
-
 }

@@ -6,14 +6,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.amreshmaurya.payflow.dto.merchant.request.CreateMerchantRequest;
+import com.amreshmaurya.payflow.dto.merchant.request.UpdateMerchantRequest;
 import com.amreshmaurya.payflow.dto.merchant.response.MerchantResponse;
 import com.amreshmaurya.payflow.entity.merchant.Merchant;
 import com.amreshmaurya.payflow.exception.ResourceNotFoundException;
 import com.amreshmaurya.payflow.mapper.MerchantMapper;
 import com.amreshmaurya.payflow.repository.MerchantRepository;
 import com.amreshmaurya.payflow.util.ApiKeyGenerator;
-
-
 
 @Service
 public class MerchantService {
@@ -22,9 +21,8 @@ public class MerchantService {
     MerchantMapper merchantMapper;
     PasswordEncoder passwordEncoder;
 
-
-    
-    public MerchantService(MerchantRepository   merchantRepository, MerchantMapper merchantMapper,PasswordEncoder passwordEncoder) {
+    public MerchantService(MerchantRepository merchantRepository, MerchantMapper merchantMapper,
+            PasswordEncoder passwordEncoder) {
         this.merchantRepository = merchantRepository;
         this.merchantMapper = merchantMapper;
         this.passwordEncoder = passwordEncoder;
@@ -35,41 +33,54 @@ public class MerchantService {
         // hashed password
         createMerchantRequest.setPassword(passwordEncoder.encode(createMerchantRequest.getPassword()));
 
-
-
-        String merchantId =  "MER" + UUID.randomUUID().toString();
+        String merchantId = "MER" + UUID.randomUUID().toString();
         createMerchantRequest.setMerchantCode(merchantId);
-
 
         Merchant merchant = merchantMapper.toEntity(createMerchantRequest);
 
         merchant.setActive(true);
         merchant.setApiKey(ApiKeyGenerator.generateApiKey());
         merchant.setSecretKey(ApiKeyGenerator.generateSecretKey());
-        Merchant res =  merchantRepository.save(merchant);
-         return merchantMapper.toResponse(res);
+        Merchant res = merchantRepository.save(merchant);
+        return merchantMapper.toResponse(res);
 
     }
 
+    public MerchantResponse updateMerchant(UUID id, UpdateMerchantRequest updateMerchantRequest) {
 
-   public MerchantResponse updateMerchant(UUID id,  CreateMerchantRequest createMerchantRequest) {
-    
-        Merchant merchant = merchantRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Merchant not found"));
-        merchantMapper.updateMerchantFromRequest(createMerchantRequest, merchant);
-        Merchant res =  merchantRepository.save(merchant);
-         return merchantMapper.toResponse(res);
+        Merchant merchant = merchantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Merchant not found"));
+        merchantMapper.updateMerchantFromRequest(updateMerchantRequest, merchant);
+        Merchant res = merchantRepository.save(merchant);
+        return merchantMapper.toResponse(res);
 
     }
-   
 
-   public void deleteMerchant(UUID id) {
-        Merchant merchant = merchantRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Merchant not found"));
+    public void deleteMerchant(UUID id) {
+        Merchant merchant = merchantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Merchant not found"));
         merchantRepository.delete(merchant);
     }
 
     public MerchantResponse getMerchantById(UUID id) {
-     Merchant res = merchantRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Merchant not found"));
-   return  merchantMapper.toResponse(res);
+        Merchant res = merchantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Merchant not found"));
+        return merchantMapper.toResponse(res);
+    }
+
+    public MerchantResponse getMerchantByMerchantCode(String merchantCode) {
+        Merchant merchantResponse = merchantRepository.findByMerchantCode(merchantCode).orElseThrow(()-> new ResourceNotFoundException("Merchant not found"));
+        return merchantMapper.toResponse(merchantResponse);
+    }
+
+    public MerchantResponse getMerchantByEmail(String email) {
+       Merchant merchantResponse = merchantRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("Merchant not found"));
+        return merchantMapper.toResponse(merchantResponse);
+    }
+
+    public MerchantResponse getMerchantByPhone(String phone) {
+        Merchant merchantResponse = merchantRepository.findByPhone(phone).orElseThrow(()-> new ResourceNotFoundException("Merchant not found"));
+        return merchantMapper.toResponse(merchantResponse);
     }
 
 }
