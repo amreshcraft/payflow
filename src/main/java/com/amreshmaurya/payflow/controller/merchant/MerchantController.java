@@ -124,4 +124,18 @@ public class MerchantController {
                         .timestamp(LocalDateTime.now())
                         .build());
     }
+
+
+
+
+public ResponseEntity<ApiResponse<MerchantResponse>> activateMerchantByMerchantCode(
+            @PathVariable String merchantCode) {
+                return null;
+    }
+
+public ResponseEntity<ApiResponse<MerchantResponse>> deactivateMerchantByMerchantCode(
+            @PathVariable String merchantCode) {
+                return null;
+    }    
+
 }
