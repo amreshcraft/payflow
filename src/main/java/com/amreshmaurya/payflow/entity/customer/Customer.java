@@ -16,9 +16,7 @@ import lombok.Builder.Default;
 @Builder
 public class Customer extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+ 
 
     @Column(nullable = false)
     private String fullName;

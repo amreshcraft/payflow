@@ -11,39 +11,131 @@ import org.springframework.web.bind.annotation.RestController;
 import com.amreshmaurya.payflow.dto.customer.request.CreateCustomerRequest;
 import com.amreshmaurya.payflow.dto.customer.request.UpdateCustomerRequest;
 
+import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatus;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.amreshmaurya.payflow.common.response.ApiResponse;
+
+import com.amreshmaurya.payflow.dto.customer.response.CustomerResponse;
+import com.amreshmaurya.payflow.service.customer.CustomerService;
+
 @RestController
 @RequestMapping("/api/v1/customers")
 public class CustomerController {
 
+    private final CustomerService customerService;
 
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
-//     POST   /api/v1/customers
-public ResponseEntity<?> createCustomer(@RequestBody CreateCustomerRequest createCustomerRequest) {
-    // Implementation for creating a new customer
-    return null;
-}
+    @PostMapping
+    public ResponseEntity<ApiResponse<CustomerResponse>> createCustomer(
+            @RequestBody CreateCustomerRequest createCustomerRequest) {
 
-// GET    /api/v1/customers
-public ResponseEntity<?> getAllCustomers() {
-    return null;
-    // Implementation for retrieving all customers
-}
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.<CustomerResponse>builder()
+                        .success(true)
+                        .message("Customer created successfully")
+                        .data(customerService.createCustomer(createCustomerRequest))
+                        .timestamp(LocalDateTime.now())
+                        .build());
+    }
 
-// GET    /api/v1/customers/{customerId}
-public ResponseEntity<?> getCustomerById(@PathVariable UUID customerId) {
-    return null;
-    // Implementation for retrieving a customer by ID
-}
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<CustomerResponse>> getCustomerById(
+            @PathVariable UUID id) {
 
-// PUT    /api/v1/customers/{customerId}
-public ResponseEntity<?> updateCustomer(@PathVariable UUID customerId, @RequestBody UpdateCustomerRequest updateCustomerRequest) {
-    // Implementation for updating a customer
-    return null;
-}
+        return ResponseEntity.ok(
+                ApiResponse.<CustomerResponse>builder()
+                        .success(true)
+                        .message("Customer retrieved successfully")
+                        .data(customerService.getCustomerById(id))
+                        .timestamp(LocalDateTime.now())
+                        .build());
+    }
 
-// DELETE /api/v1/customers/{customerId}
-public ResponseEntity<?> deleteCustomer(@PathVariable UUID customerId) {
-    return null;
-    // Implementation for deleting a customer
-}
+    @GetMapping("/email")
+    public ResponseEntity<ApiResponse<CustomerResponse>> getCustomerByEmail(
+            @RequestParam String email) {
+
+        return ResponseEntity.ok(
+                ApiResponse.<CustomerResponse>builder()
+                        .success(true)
+                        .message("Customer retrieved successfully")
+                        .data(customerService.getCustomerByEmail(email))
+                        .timestamp(LocalDateTime.now())
+                        .build());
+    }
+
+    // @GetMapping("/phone/{phone}")
+    // public ResponseEntity<ApiResponse<CustomerResponse>> getCustomerByPhone(
+    // @PathVariable String phone) {
+
+    // return ResponseEntity.ok(
+    // ApiResponse.<CustomerResponse>builder()
+    // .success(true)
+    // .message("Customer retrieved successfully")
+    // .data(customerService.getCustomerByPhone(phone))
+    // .timestamp(LocalDateTime.now())
+    // .build());
+    // }
+
+    // @PutMapping("/{id}")
+    // public ResponseEntity<ApiResponse<CustomerResponse>> updateCustomer(
+    // @PathVariable UUID id,
+    // @RequestBody UpdateCustomerRequest updateCustomerRequest) {
+
+    // return ResponseEntity.ok(
+    // ApiResponse.<CustomerResponse>builder()
+    // .success(true)
+    // .message("Customer updated successfully")
+    // .data(customerService.updateCustomer(id, updateCustomerRequest))
+    // .timestamp(LocalDateTime.now())
+    // .build());
+    // }
+
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<ApiResponse<Void>> deleteCustomer(
+    // @PathVariable UUID id) {
+
+    // customerService.deleteCustomer(id);
+
+    // return ResponseEntity.ok(
+    // ApiResponse.<Void>builder()
+    // .success(true)
+    // .message("Customer deleted successfully")
+    // .timestamp(LocalDateTime.now())
+    // .build());
+    // }
+
+    // @PatchMapping("/{id}/activate")
+    // public ResponseEntity<ApiResponse<CustomerResponse>> activateCustomer(
+    // @PathVariable UUID id) {
+
+    // return ResponseEntity.ok(
+    // ApiResponse.<CustomerResponse>builder()
+    // .success(true)
+    // .message("Customer activated successfully")
+    // .data(customerService.activateCustomer(id))
+    // .timestamp(LocalDateTime.now())
+    // .build());
+    // }
+
+    // @PatchMapping("/{id}/deactivate")
+    // public ResponseEntity<ApiResponse<CustomerResponse>> deactivateCustomer(
+    // @PathVariable UUID id) {
+
+    // return ResponseEntity.ok(
+    // ApiResponse.<CustomerResponse>builder()
+    // .success(true)
+    // .message("Customer deactivated successfully")
+    // .data(customerService.deactivateCustomer(id))
+    // .timestamp(LocalDateTime.now())
+    // .build());
+    // }
+
 }
