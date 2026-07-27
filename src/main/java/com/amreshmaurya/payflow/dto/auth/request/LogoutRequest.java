@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RefreshTokenRequest {
+public class LogoutRequest {
 
     @NotBlank(message = "Refresh token is required")
     private String refreshToken;

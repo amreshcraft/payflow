@@ -1,5 +1,6 @@
 package com.amreshmaurya.payflow.dto.auth.response;
 
+
 import lombok.*;
 
 @Getter
@@ -7,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RefreshTokenResponse {
+public class LoginResponse {
 
     private String accessToken;
 
