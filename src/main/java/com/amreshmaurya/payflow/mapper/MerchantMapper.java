@@ -5,6 +5,7 @@ import com.amreshmaurya.payflow.dto.merchant.response.MerchantResponse;
 import com.amreshmaurya.payflow.entity.merchant.Merchant;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
@@ -17,6 +18,9 @@ public interface MerchantMapper {
 
     public MerchantResponse toResponse(Merchant merchant);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     public void updateMerchantFromRequest(UpdateMerchantRequest updateMerchantRequest,
             @MappingTarget Merchant merchant);
 
