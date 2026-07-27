@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amreshmaurya.payflow.dto.customer.request.CreateCustomerRequest;
+import com.amreshmaurya.payflow.dto.customer.request.UpdateCustomerRequest;
+
 @RestController
 @RequestMapping("/api/v1/customers")
 public class CustomerController {
@@ -17,6 +20,7 @@ public class CustomerController {
 //     POST   /api/v1/customers
 public ResponseEntity<?> createCustomer(@RequestBody CreateCustomerRequest createCustomerRequest) {
     // Implementation for creating a new customer
+    return null;
 }
 
 // GET    /api/v1/customers
@@ -34,6 +38,7 @@ public ResponseEntity<?> getCustomerById(@PathVariable UUID customerId) {
 // PUT    /api/v1/customers/{customerId}
 public ResponseEntity<?> updateCustomer(@PathVariable UUID customerId, @RequestBody UpdateCustomerRequest updateCustomerRequest) {
     // Implementation for updating a customer
+    return null;
 }
 
 // DELETE /api/v1/customers/{customerId}
