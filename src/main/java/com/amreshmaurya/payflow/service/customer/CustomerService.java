@@ -6,8 +6,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.amreshmaurya.payflow.dto.customer.request.CreateCustomerRequest;
+import com.amreshmaurya.payflow.dto.customer.request.UpdateCustomerRequest;
 import com.amreshmaurya.payflow.dto.customer.response.CustomerResponse;
 import com.amreshmaurya.payflow.entity.customer.Customer;
+import com.amreshmaurya.payflow.exception.ResourceNotFoundException;
 import com.amreshmaurya.payflow.mapper.CustomerMapper;
 import com.amreshmaurya.payflow.repository.CustomerRepository;
 
@@ -38,7 +40,7 @@ public class CustomerService {
 
   public CustomerResponse getCustomerById(UUID customerId) {
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         return customerMapper.toResponse(customer);
     }
 
@@ -46,23 +48,29 @@ public class CustomerService {
 
   public CustomerResponse getCustomerByEmail(String email) {
         Customer customer = customerRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         return customerMapper.toResponse(customer);
     }
 
-    // public CustomerResponse updateCustomer(UUID  customerId, CreateCustomerRequest request) {
-    //     // Implementation for updating a customer
-    //     Customer existingCustomer = customerRepository.findById(customerId)
-    //             .orElseThrow(() -> new RuntimeException("Customer not found"));
-    //     customerMapper.updateEntity(request, existingCustomer);
-    //     Customer updatedCustomer = customerRepository.save(existingCustomer);
-    //     return customerMapper.toResponse(updatedCustomer);
-    // }
+      public CustomerResponse getCustomerByPhone(String phone) {
+        Customer customer = customerRepository.findByPhone(phone)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        return customerMapper.toResponse(customer);
+    }
+
+    public CustomerResponse updateCustomer(UUID  customerId, UpdateCustomerRequest request) {
+        // Implementation for updating a customer
+        Customer existingCustomer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found to update"));
+        customerMapper.updateEntity(request, existingCustomer);
+        Customer updatedCustomer = customerRepository.save(existingCustomer);
+        return customerMapper.toResponse(updatedCustomer);
+    }
 
     public void deleteCustomer(UUID customerId) {
         // Implementation for deleting a customer
         Customer existingCustomer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found to for deletion"));
         customerRepository.delete(existingCustomer);
     }
 
