@@ -1,40 +1,35 @@
 package com.amreshmaurya.payflow.dto.merchant.request;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UpdateMerchantRequest {
 
- @Column(nullable = false)
+
+    @NotBlank(message = "Business name is required")
+    @Size(min = 3, max = 100)
     private String businessName;
 
-    // @Column(nullable = false, unique = true)
-    // private String merchantCode;
 
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @Column(nullable = false)
-    private  String password;
-
-    @Column(nullable = false)
+    @NotBlank(message = "Phone is required")
+    @Pattern(
+        regexp = "^[6-9][0-9]{9}$",
+        message = "Invalid phone number"
+    )
     private String phone;
 
+
+    @Size(max = 255)
     private String website;
 
-    // @Column(nullable = false)
-    // private String apiKey;
 
-    // @Column(nullable = false)
-    // private String secretKey;
-
-    @Column(nullable = false)
-    private Boolean active = true;
 }

@@ -1,78 +1,28 @@
 package com.amreshmaurya.payflow.service.customer;
 
+
+
 import java.util.UUID;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.amreshmaurya.payflow.dto.customer.request.CreateCustomerRequest;
 import com.amreshmaurya.payflow.dto.customer.request.UpdateCustomerRequest;
-import com.amreshmaurya.payflow.dto.customer.response.CustomerResponse;
 import com.amreshmaurya.payflow.entity.customer.Customer;
-import com.amreshmaurya.payflow.exception.ResourceNotFoundException;
-import com.amreshmaurya.payflow.mapper.CustomerMapper;
-import com.amreshmaurya.payflow.repository.CustomerRepository;
 
+public interface CustomerService {
 
+    Customer createCustomer(CreateCustomerRequest request);
 
-@Service
-public class CustomerService {
-    
+    Customer updateCustomer(UUID customerId, UpdateCustomerRequest request);
 
-     private final CustomerRepository customerRepository;
-     private final CustomerMapper customerMapper;
-     private final PasswordEncoder passwordEncoder;
+    Customer getCustomerById(UUID customerId);
 
+    Customer getCustomerByEmail(String email);
 
-     public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper, PasswordEncoder passwordEncoder) {
-         this.customerRepository = customerRepository;
-         this.customerMapper = customerMapper;
-         this.passwordEncoder = passwordEncoder;
-     }
+    Customer getCustomerByPhone(String phone);
 
-    
-    public CustomerResponse createCustomer(CreateCustomerRequest request) {
-        request.setPassword(passwordEncoder.encode(request.getPassword()));
-        Customer customer = customerMapper.toEntity(request);
-        Customer savedCustomer = customerRepository.save(customer);
-        return customerMapper.toResponse(savedCustomer);
-    }
+    void activateCustomer(UUID customerId);
 
-  public CustomerResponse getCustomerById(UUID customerId) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-        return customerMapper.toResponse(customer);
-    }
+    void deactivateCustomer(UUID customerId);
 
-
-
-  public CustomerResponse getCustomerByEmail(String email) {
-        Customer customer = customerRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-        return customerMapper.toResponse(customer);
-    }
-
-      public CustomerResponse getCustomerByPhone(String phone) {
-        Customer customer = customerRepository.findByPhone(phone)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-        return customerMapper.toResponse(customer);
-    }
-
-    public CustomerResponse updateCustomer(UUID  customerId, UpdateCustomerRequest request) {
-        // Implementation for updating a customer
-        Customer existingCustomer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found to update"));
-        customerMapper.updateEntity(request, existingCustomer);
-        Customer updatedCustomer = customerRepository.save(existingCustomer);
-        return customerMapper.toResponse(updatedCustomer);
-    }
-
-    public void deleteCustomer(UUID customerId) {
-        // Implementation for deleting a customer
-        Customer existingCustomer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found to for deletion"));
-        customerRepository.delete(existingCustomer);
-    }
-
+    void deleteCustomer(UUID customerId);
 
 }

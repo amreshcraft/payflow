@@ -4,6 +4,7 @@ import com.amreshmaurya.payflow.dto.merchant.request.CreateMerchantRequest;
 import com.amreshmaurya.payflow.dto.merchant.response.MerchantResponse;
 import com.amreshmaurya.payflow.entity.merchant.Merchant;
 
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -13,9 +14,9 @@ import com.amreshmaurya.payflow.dto.merchant.request.UpdateMerchantRequest;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface MerchantMapper {
-    // Merchant toEntity(UpdateMerchantRequest updateMerchantRequest);
     public Merchant toEntity(CreateMerchantRequest merchantRequest);
 
+    @Mapping(source = "user.email", target = "email")
     public MerchantResponse toResponse(Merchant merchant);
 
     @Mapping(target = "id", ignore = true)

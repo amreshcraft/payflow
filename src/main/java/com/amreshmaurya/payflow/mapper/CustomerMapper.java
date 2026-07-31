@@ -14,7 +14,8 @@ import com.amreshmaurya.payflow.entity.customer.Customer;
 public interface CustomerMapper {
 
     Customer toEntity(CreateCustomerRequest request);
-
+    
+    @Mapping(source = "user.email", target = "email")
     CustomerResponse toResponse(Customer customer);
 
     @Mapping(target = "id", ignore = true)

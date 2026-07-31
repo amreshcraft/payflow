@@ -3,38 +3,32 @@ package com.amreshmaurya.payflow.controller.customer;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.amreshmaurya.payflow.dto.customer.request.CreateCustomerRequest;
 import com.amreshmaurya.payflow.dto.customer.request.UpdateCustomerRequest;
-
 import java.time.LocalDateTime;
-
 import org.springframework.http.HttpStatus;
-
 import org.springframework.web.bind.annotation.*;
-
 import com.amreshmaurya.payflow.common.response.ApiResponse;
-
 import com.amreshmaurya.payflow.dto.customer.response.CustomerResponse;
+import com.amreshmaurya.payflow.mapper.CustomerMapper;
 import com.amreshmaurya.payflow.service.customer.CustomerService;
-
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequestMapping("/api/v1/customers")
+@RequiredArgsConstructor
 public class CustomerController {
 
         private final CustomerService customerService;
+        private final CustomerMapper customerMapper;
 
-        public CustomerController(CustomerService customerService) {
-                this.customerService = customerService;
-        }
-
+   
         @PostMapping
         public ResponseEntity<ApiResponse<CustomerResponse>> createCustomer(
                         @Valid @RequestBody CreateCustomerRequest createCustomerRequest) {
@@ -43,10 +37,12 @@ public class CustomerController {
                                 .body(ApiResponse.<CustomerResponse>builder()
                                                 .success(true)
                                                 .message("Customer created successfully")
-                                                .data(customerService.createCustomer(createCustomerRequest))
+                                                .data(customerMapper.toResponse(customerService.createCustomer(createCustomerRequest)))
                                                 .timestamp(LocalDateTime.now())
                                                 .build());
         }
+
+
 
         @GetMapping("/{id}")
         public ResponseEntity<ApiResponse<CustomerResponse>> getCustomerById(
@@ -56,10 +52,12 @@ public class CustomerController {
                                 ApiResponse.<CustomerResponse>builder()
                                                 .success(true)
                                                 .message("Customer retrieved successfully")
-                                                .data(customerService.getCustomerById(id))
+                                                .data(customerMapper.toResponse(customerService.getCustomerById(id)))
                                                 .timestamp(LocalDateTime.now())
                                                 .build());
         }
+
+
 
         @GetMapping("/email")
         public ResponseEntity<ApiResponse<CustomerResponse>> getCustomerByEmail(
@@ -69,10 +67,12 @@ public class CustomerController {
                                 ApiResponse.<CustomerResponse>builder()
                                                 .success(true)
                                                 .message("Customer retrieved successfully")
-                                                .data(customerService.getCustomerByEmail(email))
+                                                .data(customerMapper.toResponse(customerService.getCustomerByEmail(email)))
                                                 .timestamp(LocalDateTime.now())
                                                 .build());
         }
+
+
 
         @GetMapping("/phone/{phone}")
         public ResponseEntity<ApiResponse<CustomerResponse>> getCustomerByPhone(
@@ -82,10 +82,13 @@ public class CustomerController {
                                 ApiResponse.<CustomerResponse>builder()
                                                 .success(true)
                                                 .message("Customer retrieved successfully")
-                                                .data(customerService.getCustomerByPhone(phone))
+                                                .data(customerMapper.toResponse(customerService.getCustomerByPhone(phone)))
                                                 .timestamp(LocalDateTime.now())
                                                 .build());
         }
+
+
+
 
         @PutMapping("/{id}")
         public ResponseEntity<ApiResponse<CustomerResponse>> updateCustomer(
@@ -96,10 +99,12 @@ public class CustomerController {
                                 ApiResponse.<CustomerResponse>builder()
                                                 .success(true)
                                                 .message("Customer updated successfully")
-                                                .data(customerService.updateCustomer(id, updateCustomerRequest))
+                                                .data(customerMapper.toResponse(customerService.updateCustomer(id, updateCustomerRequest)))
                                                 .timestamp(LocalDateTime.now())
                                                 .build());
         }
+
+
 
         // @DeleteMapping("/{id}")
         // public ResponseEntity<ApiResponse<Void>> deleteCustomer(

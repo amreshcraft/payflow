@@ -1,9 +1,11 @@
 package com.amreshmaurya.payflow.dto.customer.request;
 
-import jakarta.validation.constraints.Email;
+
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
+
 
 @Getter
 @Setter
@@ -12,18 +14,17 @@ import lombok.*;
 @Builder
 public class UpdateCustomerRequest {
 
-    @Size(max = 100, message = "Full name cannot exceed 100 characters")
+
+    @NotBlank(message = "Full name is required")
+    @Size(min = 3,max = 100)
     private String fullName;
 
-    @Email(message = "Invalid email address")
-    @Size(max = 255, message = "Email cannot exceed 255 characters")
-    private String email;
 
+    @NotBlank(message = "Phone is required")
     @Pattern(
-            regexp = "^[0-9]{10,15}$",
-            message = "Phone number must be between 10 and 15 digits"
+        regexp = "^[6-9][0-9]{9}$",
+        message = "Invalid phone number"
     )
     private String phone;
 
-    private Boolean active;
 }

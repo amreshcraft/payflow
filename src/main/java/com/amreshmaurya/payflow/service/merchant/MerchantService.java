@@ -1,86 +1,28 @@
 package com.amreshmaurya.payflow.service.merchant;
 
+
+
 import java.util.UUID;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.amreshmaurya.payflow.dto.merchant.request.CreateMerchantRequest;
 import com.amreshmaurya.payflow.dto.merchant.request.UpdateMerchantRequest;
-import com.amreshmaurya.payflow.dto.merchant.response.MerchantResponse;
 import com.amreshmaurya.payflow.entity.merchant.Merchant;
-import com.amreshmaurya.payflow.exception.ResourceNotFoundException;
-import com.amreshmaurya.payflow.mapper.MerchantMapper;
-import com.amreshmaurya.payflow.repository.MerchantRepository;
-import com.amreshmaurya.payflow.util.ApiKeyGenerator;
 
-@Service
-public class MerchantService {
+public interface MerchantService {
 
-    MerchantRepository merchantRepository;
-    MerchantMapper merchantMapper;
-    PasswordEncoder passwordEncoder;
+    Merchant createMerchant(CreateMerchantRequest request);
 
-    public MerchantService(MerchantRepository merchantRepository, MerchantMapper merchantMapper,
-            PasswordEncoder passwordEncoder) {
-        this.merchantRepository = merchantRepository;
-        this.merchantMapper = merchantMapper;
-        this.passwordEncoder = passwordEncoder;
-    }
+    Merchant updateMerchant(UUID merchantId, UpdateMerchantRequest request);
 
-    public MerchantResponse createMerchant(CreateMerchantRequest createMerchantRequest) {
-        System.out.println(createMerchantRequest);
-        // hashed password
-        createMerchantRequest.setPassword(passwordEncoder.encode(createMerchantRequest.getPassword()));
+    Merchant getMerchantById(UUID merchantId);
 
-        String merchantId = "MER" + UUID.randomUUID().toString();
-        createMerchantRequest.setMerchantCode(merchantId);
+    Merchant getMerchantByMerchantCode(String merchantCode);
 
-        Merchant merchant = merchantMapper.toEntity(createMerchantRequest);
+    Merchant getMerchantByEmail(String email);
 
-        merchant.setActive(true);
-        merchant.setApiKey(ApiKeyGenerator.generateApiKey());
-        merchant.setSecretKey(ApiKeyGenerator.generateSecretKey());
-        Merchant res = merchantRepository.save(merchant);
-        return merchantMapper.toResponse(res);
+    void deleteMerchant(UUID merchantId);
 
-    }
+    void activateMerchant(UUID merchantId);
 
-    public MerchantResponse updateMerchant(UUID id, UpdateMerchantRequest updateMerchantRequest) {
-
-        Merchant merchant = merchantRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Merchant not found"));
-        merchantMapper.updateMerchantFromRequest(updateMerchantRequest, merchant);
-        Merchant res = merchantRepository.save(merchant);
-        return merchantMapper.toResponse(res);
-
-    }
-
-    public void deleteMerchant(UUID id) {
-        Merchant merchant = merchantRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Merchant not found"));
-        merchantRepository.delete(merchant);
-    }
-
-    public MerchantResponse getMerchantById(UUID id) {
-        Merchant res = merchantRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Merchant not found"));
-        return merchantMapper.toResponse(res);
-    }
-
-    public MerchantResponse getMerchantByMerchantCode(String merchantCode) {
-        Merchant merchantResponse = merchantRepository.findByMerchantCode(merchantCode).orElseThrow(()-> new ResourceNotFoundException("Merchant not found"));
-        return merchantMapper.toResponse(merchantResponse);
-    }
-
-    public MerchantResponse getMerchantByEmail(String email) {
-       Merchant merchantResponse = merchantRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("Merchant not found"));
-        return merchantMapper.toResponse(merchantResponse);
-    }
-
-    public MerchantResponse getMerchantByPhone(String phone) {
-        Merchant merchantResponse = merchantRepository.findByPhone(phone).orElseThrow(()-> new ResourceNotFoundException("Merchant not found"));
-        return merchantMapper.toResponse(merchantResponse);
-    }
+    void deactivateMerchant(UUID merchantId);
 
 }

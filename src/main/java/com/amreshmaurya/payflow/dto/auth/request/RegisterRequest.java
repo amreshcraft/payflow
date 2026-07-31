@@ -16,10 +16,6 @@ import lombok.*;
 @Builder
 public class RegisterRequest {
 
-    @NotBlank(message = "Business name is required")
-    @Size(max = 100)
-    private String businessName;
-
     @NotBlank(message = "Full name is required")
     @Size(max = 100)
     private String fullName;

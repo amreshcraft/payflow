@@ -1,60 +1,71 @@
 package com.amreshmaurya.payflow.controller.auth;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.time.LocalDateTime;
 
-import com.amreshmaurya.payflow.dto.auth.request.ChangePasswordRequest;
-import com.amreshmaurya.payflow.dto.auth.request.ForgotPasswordRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+                                                                                                                                                                
+import com.amreshmaurya.payflow.common.response.ApiResponse;
 import com.amreshmaurya.payflow.dto.auth.request.LoginRequest;
-import com.amreshmaurya.payflow.dto.auth.request.LogoutRequest;
-import com.amreshmaurya.payflow.dto.auth.request.RefreshTokenRequest;
-import com.amreshmaurya.payflow.dto.auth.request.RegisterRequest;
-import com.amreshmaurya.payflow.dto.auth.request.ResetPasswordRequest;
+import com.amreshmaurya.payflow.dto.auth.response.LoginResponse;
+import com.amreshmaurya.payflow.dto.customer.request.CreateCustomerRequest;
+import com.amreshmaurya.payflow.dto.customer.response.CustomerResponse;
+import com.amreshmaurya.payflow.dto.merchant.request.CreateMerchantRequest;
+import com.amreshmaurya.payflow.dto.merchant.response.MerchantResponse;
+import com.amreshmaurya.payflow.service.auth.AuthService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-// POST   /api/v1/auth/register
-public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
-    // Implementation for user registration
-    return null;
-}
-
-// POST   /api/v1/auth/login
-public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
-    // Implementation for user login
-    return null;
-}
-// POST   /api/v1/auth/refresh-token
-public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
-    // Implementation for refreshing JWT token
-    return null;
-}
-// POST   /api/v1/auth/logout
-public ResponseEntity<?> logoutUser(@RequestBody LogoutRequest logoutRequest) {
-    // Implementation for user logout
-    return null;
-}
-
-// POST   /api/v1/auth/forgot-password
-public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) {
-    // Implementation for initiating password reset
-    return null;
-}
-// POST   /api/v1/auth/reset-password
-public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
-    // Implementation for resetting password
-     return null;
-}
-// POST   /api/v1/auth/change-password
-public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
-    // Implementation for changing password
-    return null;
+    private final AuthService authService;
 
 
-}
+
+    @PostMapping("/register/customer")
+    public ResponseEntity<ApiResponse<CustomerResponse>> registerCustomer(
+            @Valid @RequestBody CreateCustomerRequest request) {
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.<CustomerResponse>builder()
+                        .success(true)
+                        .message("Registration successful")
+                        .data(authService.registerCustomer(request))
+                        .timestamp(LocalDateTime.now())
+                        .build());
+    }
+
+        @PostMapping("/register/merchant")
+    public ResponseEntity<ApiResponse<MerchantResponse>> registerMerchant(
+            @Valid @RequestBody CreateMerchantRequest request) {
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.<MerchantResponse>builder()
+                        .success(true)
+                        .message("Registration successful")
+                        .data(authService.registerMerchant(request))
+                        .timestamp(LocalDateTime.now())
+                        .build());
+    }
+
+
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<LoginResponse>> login(
+            @Valid @RequestBody LoginRequest request) {
+
+        return ResponseEntity.ok(
+                ApiResponse.<LoginResponse>builder()
+                        .success(true)
+                        .message("Login successful")
+                        .data(authService.login(request))
+                        .timestamp(LocalDateTime.now())
+                        .build());
+    }
 
 }

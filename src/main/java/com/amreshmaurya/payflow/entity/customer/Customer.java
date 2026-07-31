@@ -1,14 +1,16 @@
 package com.amreshmaurya.payflow.entity.customer;
 
-import java.util.UUID;
 
 import com.amreshmaurya.payflow.entity.BaseEntity;
+import com.amreshmaurya.payflow.entity.user.User;
+
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.Builder.Default;
+
+
 
 @Entity
-@Table(name = "customers")
+@Table(name="customers")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,20 +18,19 @@ import lombok.Builder.Default;
 @Builder
 public class Customer extends BaseEntity {
 
- 
 
-    @Column(nullable = false)
+    @Column(nullable=false)
     private String fullName;
 
-    @Column(nullable = false, unique = true)
-    private String email;
 
-    @Column(nullable = false)
     private String phone;
 
 
-    @Default
-    private Boolean active = true;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
 
-  
+    @Builder.Default
+    private Boolean active=true;
+
 }

@@ -1,12 +1,19 @@
 package com.amreshmaurya.payflow.dto.merchant.response;
 
-
-import lombok.Data;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class MerchantResponse {
 
     private UUID id;
@@ -15,17 +22,17 @@ public class MerchantResponse {
 
     private String merchantCode;
 
+    // Comes from User entity
     private String email;
 
     private String phone;
 
     private String website;
 
-    private String apiKey;
-
     private Boolean active;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
 }

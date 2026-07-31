@@ -48,6 +48,29 @@ public class GlobalExceptionHandler {
     }
 
 
+
+
+    // email already exist exception
+    @ExceptionHandler(EmailAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> handleEmailAlreadyExist(
+            EmailAlreadyExistException ex,
+            HttpServletRequest request) {
+
+
+        ErrorResponse response = ErrorResponse.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .error(HttpStatus.CONFLICT.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+
+
+
+
     // Validation Errors
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidation(
@@ -71,6 +94,10 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(response);
     }
+
+
+
+
 
     // Database Errors
     @ExceptionHandler(DataIntegrityViolationException.class)

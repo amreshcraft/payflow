@@ -1,6 +1,3 @@
-
-
-
 package com.amreshmaurya.payflow.dto.customer.request;
 
 import jakarta.validation.constraints.Email;
@@ -9,6 +6,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,24 +15,34 @@ import lombok.*;
 @Builder
 public class CreateCustomerRequest {
 
+
     @NotBlank(message = "Full name is required")
-    @Size(max = 100, message = "Full name cannot exceed 100 characters")
+    @Size(
+        min = 3,
+        max = 100,
+        message = "Name must be between 3 and 100 characters"
+    )
     private String fullName;
 
+
     @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email address")
-    @Size(max = 255, message = "Email cannot exceed 255 characters")
+    @Email(message = "Invalid email format")
     private String email;
 
 
     @NotBlank(message = "Password is required")
-    @Size(min = 8, max = 100, message = "Password must be between 8 and 100 characters")
+    @Size(
+        min = 8,
+        message = "Password must contain minimum 8 characters"
+    )
     private String password;
+
 
     @NotBlank(message = "Phone number is required")
     @Pattern(
-            regexp = "^[0-9]{10,15}$",
-            message = "Phone number must be between 10 and 15 digits"
+        regexp = "^[6-9][0-9]{9}$",
+        message = "Invalid Indian phone number"
     )
     private String phone;
+
 }
