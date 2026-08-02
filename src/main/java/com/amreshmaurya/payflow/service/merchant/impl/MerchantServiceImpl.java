@@ -15,6 +15,7 @@ import com.amreshmaurya.payflow.mapper.MerchantMapper;
 import com.amreshmaurya.payflow.repository.MerchantRepository;
 import com.amreshmaurya.payflow.service.merchant.MerchantService;
 import com.amreshmaurya.payflow.service.user.UserService;
+import com.amreshmaurya.payflow.util.HashedPasswordManager;
 
 
 @Service
@@ -25,13 +26,14 @@ public class MerchantServiceImpl implements MerchantService {
     private final MerchantRepository merchantRepository;
     private final UserService userService;
     private final MerchantMapper merchantMapper;
+    private final HashedPasswordManager hashedPasswordManager;
 
     @Override
     public Merchant createMerchant(CreateMerchantRequest request) {
 
         User user = userService.createUser(
                 request.getEmail(),
-                request.getPassword(),
+                hashedPasswordManager.hashPassword(request.getPassword()),
                 UserRole.MERCHANT
         );
 

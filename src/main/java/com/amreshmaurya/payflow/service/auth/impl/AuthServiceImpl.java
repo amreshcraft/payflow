@@ -47,7 +47,6 @@ public class AuthServiceImpl implements AuthService {
 
       Customer customerResponse =  customerService.createCustomer(request);
 
-        // TODO  
         return customerMapper.toResponse(customerResponse);
     }
 
@@ -66,7 +65,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'login'");
     }
     

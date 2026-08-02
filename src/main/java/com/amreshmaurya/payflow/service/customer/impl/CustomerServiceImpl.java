@@ -16,6 +16,7 @@ import com.amreshmaurya.payflow.exception.ResourceNotFoundException;
 import com.amreshmaurya.payflow.repository.CustomerRepository;
 import com.amreshmaurya.payflow.service.customer.CustomerService;
 import com.amreshmaurya.payflow.service.user.UserService;
+import com.amreshmaurya.payflow.util.HashedPasswordManager;
 
 @Service
 @RequiredArgsConstructor
@@ -24,13 +25,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final UserService userService;
+    private final HashedPasswordManager hashedPasswordManager;
 
     @Override
     public Customer createCustomer(CreateCustomerRequest request) {
 
         User user = userService.createUser(
                 request.getEmail(),
-                request.getPassword(),
+                hashedPasswordManager.hashPassword(request.getPassword()),
                 UserRole.CUSTOMER
         );
 
@@ -52,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         customer.setFullName(request.getFullName());
         customer.setPhone(request.getPhone());
-
+    
         return customerRepository.save(customer);
     }
 
