@@ -1,0 +1,3 @@
+DB_URL=jdbc:postgresql://localhost:5432/payflow
+DB_USERNAME=amresh
+DB_PASSWORD=
