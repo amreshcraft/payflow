@@ -2,11 +2,7 @@ package amreshmaurya.com.payflow.controller;
 
 import java.util.UUID;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import amreshmaurya.com.payflow.dto.user.CreateUser;
 import amreshmaurya.com.payflow.dto.user.UserResponse;
@@ -21,7 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public UserResponse createUser(CreateUser createUser){
+    public UserResponse createUser( @RequestBody CreateUser createUser){
         return userService.createUser(createUser);
     }
 

@@ -1,14 +1,22 @@
 spring:
   config:
-      import: optional:file:.env[.properties]
+    import: optional:file:.env[.properties]
+
   application:
-      name: Payflow
+    name: Payflow
+
   datasource:
-      url: ${DB_URL}
-      username: ${DB_USERNAME}
-      password: ${DB_PASSWORD}
-      driver-class-name: org.postgresql.Driver 
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
   jpa:
-      hibernate:
-        ddl-auto: update
-    
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.schema: DEBUG
