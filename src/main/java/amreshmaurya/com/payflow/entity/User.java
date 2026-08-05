@@ -1,0 +1,31 @@
+package amreshmaurya.com.payflow.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class User extends BaseEntity {
+    
+    @Column(name = "name",nullable = false)
+    private String name;
+
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    String password;
+
+    @Column(name = "phone", unique = true,nullable = false)
+    private String phone;
+
+}
