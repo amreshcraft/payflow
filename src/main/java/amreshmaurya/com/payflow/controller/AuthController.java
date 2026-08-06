@@ -1,32 +1,36 @@
 package amreshmaurya.com.payflow.controller;
 
 import amreshmaurya.com.payflow.api.ApiResponse;
+import amreshmaurya.com.payflow.dto.user.LoginResponse;
 import amreshmaurya.com.payflow.dto.user.LoginUser;
+import amreshmaurya.com.payflow.service.AuthService;
 import amreshmaurya.com.payflow.service.JwtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private  AuthenticationManager authenticationManager;
-    private JwtService jwtService;
 
-    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginUser loginUser) {
-       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getEmail(),loginUser.getPassword()));
-       if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(loginUser.getEmail());
-        } else {
-            throw new UsernameNotFoundException("Invalid user request!");
-        }
+    private final AuthService authService;
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<LoginResponse>> login(
+            @Valid @RequestBody LoginUser request) {
+        System.out.println("Auth controller");
+        return ResponseEntity.ok(
+                ApiResponse.<LoginResponse>builder()
+                        .success(true)
+                        .message("Login successful")
+                        .data(authService.login(request))
+                        .build()
+        );
     }
 }
