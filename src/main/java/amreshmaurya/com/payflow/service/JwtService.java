@@ -5,6 +5,8 @@ import amreshmaurya.com.payflow.properties.JwtProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -38,6 +40,35 @@ public class JwtService {
                 .signWith(getSigningKey())
                 .compact();
     }
+
+    public String extractSubjectFromToken(String token){
+        return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload().getSubject();
+    }
+
+
+     public boolean isTokenValid(
+            String token,
+            UserDetails userDetails
+    ) {
+
+        String username = extractSubjectFromToken(token);
+
+        return username.equals(userDetails.getUsername())
+                && !isExpired(token);
+    }
+
+    public boolean isExpired(String token) {
+
+        Date expiration = Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration();
+
+        return expiration.before(new Date());
+    }
+
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(
