@@ -1,23 +1,32 @@
 package amreshmaurya.com.payflow.entity;
 
-
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-
 
 @Entity
 @Table(name = "wallets")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Wallet extends BaseEntity {
 
-    @Column(unique = true)
     @OneToOne
     @JoinColumn(name = "user_id", unique = true, nullable = false)
     private User user;
-    BigDecimal amount;
+    @Column(nullable = false, precision = 19, scale = 2)
+    BigDecimal balance;
     String currency;
-    String status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private WalletStatus status;
     @Version
     private Long version;
 }
