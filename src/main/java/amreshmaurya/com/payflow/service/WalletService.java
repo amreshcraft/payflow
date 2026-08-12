@@ -40,15 +40,18 @@ public class WalletService {
     }
 
     @Transactional(readOnly = true)
-    public Wallet getWallet(UUID userId) {
+public Wallet getWallet(String email) {
 
-        return walletRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Wallet not found"));
-    }
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() ->
+                    new RuntimeException("User not found")
+            );
 
-    @Transactional(readOnly = true)
-    public BigDecimal getBalance(UUID userId) {
+    return walletRepository.findByUserId(user.getId())
+            .orElseThrow(() ->
+                    new RuntimeException("Wallet not found")
+            );
+}
 
-        return getWallet(userId).getBalance();
-    }
+ 
 }

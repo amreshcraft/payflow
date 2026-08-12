@@ -29,12 +29,12 @@ public ResponseEntity<Wallet> createWallet(Authentication authentication) {
             .body(wallet);
 }
     @GetMapping("/me")
-    public ResponseEntity<Wallet> getMyWallet(Authentication authentication) {
+public ResponseEntity<Wallet> getMyWallet(Authentication authentication) {
 
-        UUID userId = UUID.fromString(authentication.getName());
+    String email = authentication.getName();
 
-        Wallet wallet = walletService.getWallet(userId);
+    Wallet wallet = walletService.getWallet(email);
 
-        return ResponseEntity.ok(wallet);
-    }
+    return ResponseEntity.ok(wallet);
+}
 }
