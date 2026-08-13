@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import amreshmaurya.com.payflow.entity.User;
 
+
 public interface UserRepository extends JpaRepository<User,UUID>{  
-    Optional<User> findByEmail(String email);
+ Optional<User> findByEmail(String email);
 } 
