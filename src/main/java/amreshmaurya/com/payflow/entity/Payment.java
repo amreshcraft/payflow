@@ -1,8 +1,10 @@
 package amreshmaurya.com.payflow.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Builder.Default;
 
 import java.math.BigDecimal;
 
@@ -10,6 +12,7 @@ import java.math.BigDecimal;
 @Table(name = "payments")
 @Getter 
 @Setter
+@Builder
 public class Payment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -24,6 +27,7 @@ public class Payment extends BaseEntity {
     private BigDecimal amount;
 
     @Column(nullable = false, length = 3)
+    
     private String currency;
 
     @Enumerated(EnumType.STRING)
