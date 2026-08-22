@@ -24,7 +24,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(
             @Valid @RequestBody LoginUser request) {
-        System.out.println("Auth controller");
         return ResponseEntity.ok(
                 ApiResponse.<LoginResponse>builder()
                         .success(true)
