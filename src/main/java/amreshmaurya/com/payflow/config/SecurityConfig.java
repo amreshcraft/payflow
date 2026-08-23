@@ -39,7 +39,7 @@ public SecurityFilterChain filterChain(
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/api/v1/auth/**",   "/swagger-ui/**",
                 "/swagger-ui.html",
-                "/v3/api-docs/**").permitAll()
+                "/v3/api-docs/**","/hello").permitAll()
                     .anyRequest().authenticated()
             )
 

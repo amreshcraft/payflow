@@ -43,8 +43,8 @@ public class WalletService {
                                 savedWallet.getId(),
                                 savedWallet.getBalance(),
                                 savedWallet.getCurrency(),
-                                savedWallet.getStatus(),
-                                savedWallet.getVersion());
+                                savedWallet.getStatus()
+                              );
         }
 
         @Transactional(readOnly = true)
@@ -56,27 +56,29 @@ public class WalletService {
                                 wallet.getId(),
                                 wallet.getBalance(),
                                 wallet.getCurrency(),
-                                wallet.getStatus(),
-                                wallet.getVersion());
+                                wallet.getStatus()
+                         );
         }
 
-        public WalletResponse depositMoney(String email, BigDecimal money) {
 
-                Wallet wallet = walletRepository.findByUser_Email(email)
-                                .orElseThrow(() -> new RuntimeException("Wallet is not exist or active"));
-                if (money == null || money.compareTo(BigDecimal.ZERO) <= 0) {
-                        throw new RuntimeException("Deposit amount must be greater than zero");
-                }
 
-                wallet.setBalance(
-                                wallet.getBalance().add(money));
-                return new WalletResponse(
-                                wallet.getId(),
-                                wallet.getBalance(),
-                                wallet.getCurrency(),
-                                wallet.getStatus(),
-                                wallet.getVersion());
-
-        }
+//        public WalletResponse depositMoney(String email, BigDecimal money) {
+//
+//                Wallet wallet = walletRepository.findByUser_Email(email)
+//                                .orElseThrow(() -> new RuntimeException("Wallet is not exist or active"));
+//                if (money == null || money.compareTo(BigDecimal.ZERO) <= 0) {
+//                        throw new RuntimeException("Deposit amount must be greater than zero");
+//                }
+//
+//                wallet.setBalance(
+//                                wallet.getBalance().add(money));
+//                return new WalletResponse(
+//                                wallet.getId(),
+//                                wallet.getBalance(),
+//                                wallet.getCurrency(),
+//                                wallet.getStatus(),
+//                                wallet.getVersion());
+//
+//        }
 
 }

@@ -38,15 +38,15 @@ public class WalletController {
         return ResponseEntity.ok(wallet);
     }
 
-    @PostMapping("/deposit")
-    public ResponseEntity<WalletResponse> depositMoney(
-            Authentication authentication,
-            @RequestBody BigDecimal money) {
-
-        return ResponseEntity.ok(walletService.depositMoney(
-                authentication.getName(),
-                money));
-    }
+//    @PostMapping("/deposit")
+//    public ResponseEntity<WalletResponse> depositMoney(
+//            Authentication authentication,
+//            @RequestBody BigDecimal money) {
+//
+//        return ResponseEntity.ok(walletService.depositMoney(
+//                authentication.getName(),
+//                money));
+//    }
 
     // public ResponseEntity<WalletResponse> depositMoney(@RequestBody BigDecimal amount, Authentication authentication) {
     //     String email = authentication.getName();
