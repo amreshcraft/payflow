@@ -1,5 +1,6 @@
 package amreshmaurya.com.payflow.controller;
 
+import amreshmaurya.com.payflow.dto.wallet.DepositWallet;
 import amreshmaurya.com.payflow.dto.wallet.WalletResponse;
 import amreshmaurya.com.payflow.service.WalletService;
 import lombok.RequiredArgsConstructor;
@@ -38,19 +39,11 @@ public class WalletController {
         return ResponseEntity.ok(wallet);
     }
 
-//    @PostMapping("/deposit")
-//    public ResponseEntity<WalletResponse> depositMoney(
-//            Authentication authentication,
-//            @RequestBody BigDecimal money) {
-//
-//        return ResponseEntity.ok(walletService.depositMoney(
-//                authentication.getName(),
-//                money));
-//    }
 
-    // public ResponseEntity<WalletResponse> depositMoney(@RequestBody BigDecimal amount, Authentication authentication) {
-    //     String email = authentication.getName();
-    //     return ResponseEntity.ok(walletService.depositMoney(email, amount));
-    // }
+    @PostMapping("/deposit")
+     public ResponseEntity<WalletResponse> depositMoney(@RequestBody DepositWallet depositWallet, Authentication authentication) {
+         String email = authentication.getName();
+         return ResponseEntity.ok(walletService.depositMoney(email, depositWallet.getAmount()));
+     }
 
 }

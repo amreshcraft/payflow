@@ -27,6 +27,5 @@ public class Wallet extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private WalletStatus status;
-    @Version
-    private Long version;
+
 }
